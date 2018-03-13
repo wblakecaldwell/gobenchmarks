@@ -7,8 +7,8 @@ benchmarking different types of map keys:
 	goos: linux
 	goarch: amd64
 	pkg: github.com/wblakecaldwell/gobenchmarks/maps
-	BenchmarkIPV4-4        		100000	  12270 ns/op	# IPv4 as struct with 4 uint8's
-	BenchmarkIPV4Pair-4        	200000	   7758 ns/op	# IPv4 pair as struct with 8 uint8's
+	BenchmarkIPV4-4             100000	  12270 ns/op	# IPv4 as struct with 4 uint8's
+	BenchmarkIPV4Pair-4         200000	   7758 ns/op	# IPv4 pair as struct with 8 uint8's
 	BenchmarkUint32-4           200000	   7955 ns/op	# IPv4 as uint32
 	BenchmarkUint64-4           200000	   7849 ns/op	# IPv4 pair as uint64
 	BenchmarkIPV4String-4       200000	  10578 ns/op	# IPv4 as string
