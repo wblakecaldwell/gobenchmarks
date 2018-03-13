@@ -1,4 +1,4 @@
-benchmarking different types of map keys:
+Benchmarking different types of map keys:
 
 	$ go version
 	go version go1.9.1 linux/amd64
