@@ -12,13 +12,13 @@ benchmarking different types of map keys:
 	BenchmarkUint32-4           200000	   7955 ns/op   # IPv4 as uint32
 	BenchmarkUint64-4           200000	   7849 ns/op   # IPv4 pair as uint64
 	BenchmarkIPV4String-4       200000	  10578 ns/op   # IPv4 as string
-	BenchmarkIPV4PairString-4   100000	  11299 ns/op   # IPv4 pair as string with colon separator
+	BenchmarkIPV4PairString-4   100000	  11299 ns/op   # IPv4 pair as string with ":" separator
 	Benchmark4ByteArray-4       200000	   8013 ns/op   # IPv4 as [4]byte
 	Benchmark8ByteArray-4       200000	   7892 ns/op   # IPv4 pair as [8]byte
 	Benchmark9ByteArray-4       100000	  19113 ns/op   # fun: [9]byte
 	Benchmark16ByteArray-4      100000	  16565 ns/op   # fun: [16]byte
 	Benchmark64ByteArray-4      100000	  22081 ns/op   # fun: [64]byte
-	Benchmark16IPString-4       100000	  16629 ns/op   # fun: string with 16 IP addresses and colon separator
+	Benchmark16IPString-4       100000	  16629 ns/op   # fun: string with 16 IP addresses and ":" separator
 	PASS
 	ok  	github.com/wblakecaldwell/gobenchmarks/maps	21.438s	
 
