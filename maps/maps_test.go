@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-type IPV4 struct {
+type IPV4From8s struct {
 	a1 uint8
 	b1 uint8
 	c1 uint8
 	d1 uint8
 }
 
-type IPV4Pair struct {
+type IPV4PairFrom8s struct {
 	a1 uint8
 	b1 uint8
 	c1 uint8
@@ -23,12 +23,21 @@ type IPV4Pair struct {
 	d2 uint8
 }
 
-func buildIPV4(a uint8) IPV4 {
-	return IPV4{a, a, a, a}
+type IPV4PairFrom32s struct {
+	a uint32
+	b uint32
 }
 
-func buildIPV4Pair(a uint8) IPV4Pair {
-	return IPV4Pair{a, a, a, a, a, a, a, a}
+func buildIPV4From8s(a uint8) IPV4From8s {
+	return IPV4From8s{a, a, a, a}
+}
+
+func buildIPV4PairFrom8s(a uint8) IPV4PairFrom8s {
+	return IPV4PairFrom8s{a, a, a, a, a, a, a, a}
+}
+
+func buildIPV4PairFrom32s(a uint8) IPV4PairFrom32s {
+	return IPV4PairFrom32s{uint32(a), uint32(a)}
 }
 
 func buildUint32(a uint8) uint32 {
@@ -46,11 +55,6 @@ func buildIPv4String(a uint8) string {
 
 func buildIPv4PairString(a uint8) string {
 	return fmt.Sprintf("%d.%d.%d.%d:%d.%d.%d.%d", a, a, a, a, a, a, a, a)
-}
-
-func build16IPString(a uint8) string {
-	b := fmt.Sprintf("%d.%d.%d.%d", a, a, a, a)
-	return fmt.Sprintf("%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s", b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b)
 }
 
 func buildIPV4Bytes(a uint8) [4]byte {
@@ -86,13 +90,13 @@ func build64Bytes(a uint8) [64]byte {
 	}
 }
 
-func BenchmarkIPV4(b *testing.B) {
-	keys := make([]IPV4, 0, 256)
+func BenchmarkIPV4From8s(b *testing.B) {
+	keys := make([]IPV4From8s, 0, 256)
 	for i := 0; i < 256; i++ {
-		keys = append(keys, buildIPV4(uint8(i)))
+		keys = append(keys, buildIPV4From8s(uint8(i)))
 	}
 
-	m := make(map[IPV4]int)
+	m := make(map[IPV4From8s]int)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		for i := 0; i < 256; i++ {
@@ -101,13 +105,28 @@ func BenchmarkIPV4(b *testing.B) {
 	}
 }
 
-func BenchmarkIPV4Pair(b *testing.B) {
-	keys := make([]IPV4Pair, 0, 256)
+func BenchmarkIPV4PairFromUint8s(b *testing.B) {
+	keys := make([]IPV4PairFrom8s, 0, 256)
 	for i := 0; i < 256; i++ {
-		keys = append(keys, buildIPV4Pair(uint8(i)))
+		keys = append(keys, buildIPV4PairFrom8s(uint8(i)))
 	}
 
-	m := make(map[IPV4Pair]int)
+	m := make(map[IPV4PairFrom8s]int)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		for i := 0; i < 256; i++ {
+			m[keys[i]]++
+		}
+	}
+}
+
+func BenchmarkIPV4PairFromUint32s(b *testing.B) {
+	keys := make([]IPV4PairFrom32s, 0, 256)
+	for i := 0; i < 256; i++ {
+		keys = append(keys, buildIPV4PairFrom32s(uint8(i)))
+	}
+
+	m := make(map[IPV4PairFrom32s]int)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		for i := 0; i < 256; i++ {
@@ -206,7 +225,7 @@ func Benchmark8ByteArray(b *testing.B) {
 	}
 }
 
-func Benchmark9ByteArray(b *testing.B) {
+func BenchmarkFun9ByteArray(b *testing.B) {
 	keys := make([][9]byte, 0, 256)
 	for i := 0; i < 256; i++ {
 		keys = append(keys, build9Bytes(uint8(i)))
@@ -236,28 +255,13 @@ func Benchmark16ByteArray(b *testing.B) {
 	}
 }
 
-func Benchmark64ByteArray(b *testing.B) {
+func BenchmarkFun64ByteArray(b *testing.B) {
 	keys := make([][64]byte, 0, 256)
 	for i := 0; i < 256; i++ {
 		keys = append(keys, build64Bytes(uint8(i)))
 	}
 
 	m := make(map[[64]byte]int)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		for i := 0; i < 256; i++ {
-			m[keys[i]]++
-		}
-	}
-}
-
-func Benchmark16IPString(b *testing.B) {
-	keys := make([]string, 0, 256)
-	for i := 0; i < 256; i++ {
-		keys = append(keys, build16IPString(uint8(i)))
-	}
-
-	m := make(map[string]int)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		for i := 0; i < 256; i++ {
